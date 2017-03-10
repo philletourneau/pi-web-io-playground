@@ -93,12 +93,12 @@ import json
 def c_to_f(c):
     return c * 9.0 / 5.0 + 32.0
 
-sensor = MCP9808.MCP9808()
+#sensor = MCP9808.MCP9808()
 # Optionally you can override the address and/or bus number:
 #sensor = MCP9808.MCP9808(address=0x20, busnum=2)
 
 # Initialize communication with the sensor.
-sensor.begin()
+#sensor.begin()
 
 ### MCP3008 A/D CHIP
 spi = spidev.SpiDev()
