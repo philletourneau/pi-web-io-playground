@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Pi Land</title>
+    <script type="text/javascript" src="/static/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/static/socket.io.min.js"></script>
+    <link href="static/roundslider.min.css" rel="stylesheet" />
+    {% assets "css_all" %}
+        <link href="{{ ASSET_URL }}" rel="stylesheet"/>
+    {% endassets %}
+    <script src="static/roundslider.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            namespace = '/test'; 
+            // the socket.io documentation recommends sending an explicit package upon connection
+            // this is specially important when using the global namespace
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+
+            socket.on('my response', function(msg) {
+                $('#log').prepend('<br>' + $('<div/>').text('#' + msg.count + ': ' + msg.data).html());
+                $('#slider1').val(msg.count); // set value to msg count
+            });
+
+            socket.on('pads', function(msg) {
+                $("#" + msg.data + "").toggleClass("active")
+            });
+            socket.on('gyro', function(msg) {
+                $("#cube").css('transform','rotate('+msg.heading+'deg) rotateX('+msg.roll+'deg) rotateY('+msg.pitch+'deg)');
+            });
+
+            socket.on('joystick', function(msg) {
+                $("#joystickdot").css('transform','translateX('+msg.Xaxis+'px) translateY('+msg.Yaxis+'px)');
+                console.log('somethings happeing')
+            });
+
+            socket.on('sonarrange', function(msg) {
+               // $("#distance").html('distance: '+msg.distance+'mm');
+                $("#distance").html('distance: '+ Math.round(msg.distance*0.0393701)+' in');
+            });
+
+            socket.on('temp', function(msg) {
+                $('#temp').html($('<div/>').text(msg.data).html());
+            });
+
+            // event handler for new connections
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+
+            $( "#advance" ).click(function() {
+              socket.emit('motorMove', {data: 'advance'});
+            });
+            $( "#backward" ).click(function() {
+              socket.emit('motorMove', {data: 'backward'});
+            });
+
+            $('form#emit').submit(function(event) {
+                socket.emit('my event', {data: $('#emit_data').val()});
+                return false;
+            });
+            $('form#motorSpeed').submit(function(event) {
+                socket.emit('my event', {data: $('#emit_data').val()});
+                return false;
+            });
+            $('form#disconnect').submit(function(event) {
+                socket.emit('disconnect request');
+                return false;
+            });
+            $("#slider").roundSlider({
+                radius: 80,
+                width: 24,
+                handleSize: "+18",
+                handleShape: "dot",
+                sliderType: "min-range",
+                value: 40,
+                change: function (e) {
+                    console.log(e.value);
+                    socket.emit('speed', {data: e.value});
+                    return false;
+                }
+            });
+            function onValueChange (e) {
+                console.log(e.value);
+                alert('test')
+            };
+        });
+    </script>
+</head>
+<body>
+
+    <form id="emit" method="POST" action='#'>
+        <input type="text" name="emit_data" id="emit_data">
+        <input type="submit" value="Echo">
+    </form>
+    <form id="motorSpeed" method="POST" action='#'>
+        <input type="text" name="emit_data" id="emit_data">
+        <input type="submit" value="Echo">
+    </form>
+    <div id="pads">
+        <div class="pad" id="pad0">0</div>
+        <div class="pad" id="pad1">1</div>
+    </div>
+    <div id="heading"></div>
+    <div id="cubeparent">
+        <div id="cube" style="transform: rotateX(-270deg) rotateY(-360deg);">
+        <div class="face one">
+        </div>
+        <div class="face two">
+        </div>
+        <div class="face three">
+        </div>
+        <div class="face four">
+        </div>
+        <div class="face five">
+        </div>
+        <div class="face six">
+        </div>
+    </div>
+    </div>
+    <div id="motorcontrol">
+        <button id="advance">FWD</button><button id="backward">BACK</button>
+    </div>
+    <div id="joystick"><div id="joystickdot"></div></div>
+    <div id="temp"></div> <div id="distance"></div>
+    <div id="slider"></div>
+    <br>
+    <h2>Receive:</h2>
+    <div id="log"></div>
+</body>
+</html>

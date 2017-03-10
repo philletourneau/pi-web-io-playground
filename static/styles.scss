@@ -1,0 +1,143 @@
+$primary-color: hsla(160,90%,70%,1);
+$primary-gray: hsla(0,0%,90%,1);
+$margins: 20px;
+$borders: 2px;
+
+#pads{
+	margin: $margins;
+	position: relative;
+	width: 180px;
+	height: 90px;
+}
+.pad{
+	border-radius: 50%;
+	background-color: $primary-gray;
+	height: 40px;
+	width: 40px;
+	margin-right: 20px;
+	border: 2px solid $primary-color;
+	text-align: center;
+	padding: 5px;
+	float: left;
+	font-size: 22px;
+	color:#777;
+	line-height: 36px;
+}
+
+.active{
+	background-color: $primary-color;
+}
+body{
+	font-family: Helvetica
+}
+#log{
+	height: 200px;
+	overflow: scroll;
+}
+
+#temp{
+	border:1px solid $primary-gray;
+	padding: 10px;
+	text-align: center;
+	margin:$margins;
+	border-radius: $borders;
+	width: 140px;
+}
+#distance{
+	border:1px solid $primary-gray;
+	padding: 10px;
+	text-align: center;
+	margin:$margins;
+	width: 140px;
+	border-radius: $borders;
+}
+#motorcontrol{
+	border:1px solid $primary-gray;
+	padding: 12px;
+	text-align: center;
+	margin:$margins;
+	width: 180px;
+	height: 50px;
+	border-radius: $borders;
+
+	button{
+		background-color: $primary-gray;
+		padding: 10px;
+		width: 78px;
+		border:2px solid $primary-color;
+		margin-right: 10px;
+		font-size: 16px;
+		float: left;
+	}
+}
+#joystick{
+	height: 200px;
+	width: 200px;
+	position: relative;
+	border:1px solid $primary-gray;
+	margin: $margins;
+	border-radius: $borders;
+}
+#joystickdot{
+	border-radius: 50%;
+	background-color: $primary-color;
+	height: 20px;
+	width: 20px;
+	margin: 5px;
+	position: absolute;
+}
+
+#cubeparent {
+	perspective: 800px;
+	perspective-origin: 50% 10px;
+	border: 1px solid $primary-gray;
+	width: 200px;
+	height: 200px;
+	margin: 20px;
+}
+
+#cube {
+	position: relative;
+	height: 120px;
+	width: 120px;
+	transition: transform 0.1s linear;
+	transform-style: preserve-3d;
+	opacity: 0.9;
+}
+
+.face {
+	position: absolute;
+	height:	120px;
+	width: 120px;
+	padding: 20px;
+	background-color: $primary-color;
+	font-size: 27px;
+	line-height: 1em;
+	color: #fff;
+	border-radius: 1px;
+	border:1px solid $primary-gray;
+}
+
+#cube .one	{
+	transform: rotateX(90deg) translateZ(80px);
+}
+
+#cube .two {
+	transform: translateZ(80px);
+}
+
+#cube .three {
+	transform: rotateY(90deg) translateZ(80px);
+}
+
+#cube .four {
+	transform: rotateY(180deg) translateZ(80px);
+}
+
+#cube .five {
+	transform: rotateY(-90deg) translateZ(80px);
+}
+
+#cube .six {
+	transform: rotateX(-90deg) rotate(180deg) translateZ(80px);
+}
