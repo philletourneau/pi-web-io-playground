@@ -16,6 +16,9 @@ https://github.com/adafruit/Adafruit_Python_BNO055
 Adafruit Python MCP3008
 https://github.com/adafruit/Adafruit_Python_MCP3008
 
+Python Spidev
+https://github.com/doceme/py-spidev
+
 Installing Dependencies:
 pip install flask
 pip install flask-socketio
